@@ -82,6 +82,7 @@ COPY --from=node_builder /app/.next/static ./.next/static
 EXPOSE ${PORT:-8001} 3000
 
 # Create a script to run both backend and frontend
+COPY .env ./.env
 RUN echo '#!/bin/bash\n\
 # Load environment variables from .env file if it exists\n\
 if [ -f .env ]; then\n\
