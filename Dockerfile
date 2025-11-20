@@ -3,15 +3,6 @@
 # Build argument for custom certificates directory
 ARG CUSTOM_CERT_DIR="certs"
 
-ARG GOOGLE_API_KEY
-ENV GOOGLE_API_KEY=$GOOGLE_API_KEY
-
-ARG DEEPWIKI_AUTH_MODE
-RUN echo "DEEPWIKI_AUTH_MODE=\"$DEEPWIKI_AUTH_MODE\"" >> .env
-
-ARG DEEPWIKI_AUTH_CODE
-RUN echo "DEEPWIKI_AUTH_CODE=\"$DEEPWIKI_AUTH_CODE\"" >> .env
-
 FROM node:20-alpine3.22 AS node_base
 
 FROM node_base AS node_deps
@@ -26,6 +17,16 @@ COPY --from=node_deps /app/node_modules ./node_modules
 COPY package.json package-lock.json next.config.ts tsconfig.json tailwind.config.js postcss.config.mjs ./
 COPY src/ ./src/
 COPY public/ ./public/
+
+ARG GOOGLE_API_KEY
+ENV GOOGLE_API_KEY=$GOOGLE_API_KEY
+
+ARG DEEPWIKI_AUTH_MODE
+RUN echo "DEEPWIKI_AUTH_MODE=\"$DEEPWIKI_AUTH_MODE\"" >> .env
+
+ARG DEEPWIKI_AUTH_CODE
+RUN echo "DEEPWIKI_AUTH_CODE=\"$DEEPWIKI_AUTH_CODE\"" >> .env
+
 COPY .env ./.env
 # Increase Node.js memory limit for build and disable telemetry
 ENV NODE_OPTIONS="--max-old-space-size=4096"
