@@ -2,6 +2,12 @@
 
 # Build argument for custom certificates directory
 ARG CUSTOM_CERT_DIR="certs"
+# Railway variables
+ARG RAILWAY_SERVICE_NAME
+RUN echo $RAILWAY_SERVICE_NAM
+
+ARG GOOGLE_API_KEY
+RUN echo $GOOGLE_API_KEY >> .env
 
 FROM node:20-alpine3.22 AS node_base
 
@@ -82,7 +88,6 @@ COPY --from=node_builder /app/.next/static ./.next/static
 EXPOSE ${PORT:-8001} 3000
 
 # Create a script to run both backend and frontend
-COPY --from=node_builder /app/.env ./.env
 RUN echo '#!/bin/bash\n\
 # Load environment variables from .env file if it exists\n\
 if [ -f .env ]; then\n\
