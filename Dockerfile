@@ -11,15 +11,12 @@ RUN echo $RAILWAY_SERVICE_NAME
 
 ARG GOOGLE_API_KEY
 RUN echo "GOOGLE_API_KEY=\"$GOOGLE_API_KEY\"" >> .env
-ENV GOOGLE_API_KEY=$GOOGLE_API_KEY
 
 ARG DEEPWIKI_AUTH_MODE
 RUN echo "DEEPWIKI_AUTH_MODE=\"$DEEPWIKI_AUTH_MODE\"" >> .env
-ENV DEEPWIKI_AUTH_MODE=$DEEPWIKI_AUTH_MODE
 
 ARG DEEPWIKI_AUTH_CODE
 RUN echo "DEEPWIKI_AUTH_CODE=\"$DEEPWIKI_AUTH_CODE\"" >> .env
-ENV DEEPWIKI_AUTH_CODE=$DEEPWIKI_AUTH_CODE
 
 FROM node_base AS node_deps
 WORKDIR /app
@@ -33,7 +30,7 @@ COPY --from=node_deps /app/node_modules ./node_modules
 COPY package.json package-lock.json next.config.ts tsconfig.json tailwind.config.js postcss.config.mjs ./
 COPY src/ ./src/
 COPY public/ ./public/
-COPY --from=node_base .env ./.env
+COPY .env ./.env
 # Increase Node.js memory limit for build and disable telemetry
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -125,6 +122,7 @@ ENV SERVER_BASE_URL=http://localhost:${PORT:-8001}
 
 # Create empty .env file (will be overridden if one exists at runtime)
 RUN touch .env
+RUN cat .env
 
 # Command to run the application
 CMD ["/app/start.sh"]
