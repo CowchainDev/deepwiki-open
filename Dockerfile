@@ -33,6 +33,8 @@ RUN python -m pip install poetry==2.0.1 --no-cache-dir && \
     POETRY_MAX_WORKERS=10 poetry install --no-interaction --no-ansi --only main && \
     poetry cache clear --all .
 
+RUN python -m pip install mlflow
+
 # Use Python 3.11 as final image
 FROM python:3.11-slim
 
