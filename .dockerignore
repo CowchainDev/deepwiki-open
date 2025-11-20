@@ -38,13 +38,6 @@ var/
 api/__pycache__/
 api/*.pyc
 
-# Environment variables
-# .env is now allowed to be included in the build
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
 # Docker
 Dockerfile
 docker-compose.yml
